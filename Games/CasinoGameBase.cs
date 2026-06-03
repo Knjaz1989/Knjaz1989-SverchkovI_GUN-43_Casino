@@ -2,31 +2,12 @@
 {
     public abstract class CasinoGameBase
     {
-        protected CasinoGameBase()
-        {
-            FactoryMethod();
-        }
 
-        public event Action OnWin;
-        public event Action OnLoose;
-        public event Action OnDraw;
-
-        protected void OnWinInvoke() 
-        {
-            OnWin?.Invoke();
-        }
-        protected void OnLooseInvoke()
-        {
-            OnLoose?.Invoke();
-        }
-        protected void OnDrawInvoke()
-        {
-            OnDraw?.Invoke();
-        }
+        public abstract event Action OnWin;
+        public abstract event Action OnLoose;
+        public abstract event Action OnDraw;
 
         protected abstract void FactoryMethod();
         public abstract void PlayGame();
-
-
     }
 }

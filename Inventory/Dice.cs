@@ -16,6 +16,8 @@ namespace FinalTaskCasino.Inventory
             {
                 throw new WrongDiceNumberException(max);
             }
+            _min = min;
+            _max = max;
         }
 
         public int Number { get => _random.Next(_min, _max); }

@@ -11,6 +11,10 @@ namespace FinalTaskCasino.Games
         private List<Card> _cards = new List<Card>();
         private Queue<Card> _deck;
 
+        public override event Action OnWin;
+        public override event Action OnLoose;
+        public override event Action OnDraw;
+
         public BlackJack(int cardCount)
         {
             _cardCount = cardCount;
@@ -53,15 +57,15 @@ namespace FinalTaskCasino.Games
             }
             if (userPoints > 21 && compPoints > 21)
             {
-                Console.WriteLine("Ничья");
+                OnDraw?.Invoke();
             }
             else if (userPoints > compPoints || compPoints > 21)
             {
-                OnWinInvoke();
+                OnWin?.Invoke();
             }
             else
             {
-                OnLooseInvoke();
+                OnLoose?.Invoke();
             }
         }
 

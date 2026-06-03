@@ -1,4 +1,5 @@
-﻿using FinalTaskCasino.Main;
+﻿using FinalTaskCasino.Interfaces;
+using FinalTaskCasino.Main;
 
 namespace FinalTaskCasino
 {
@@ -6,7 +7,7 @@ namespace FinalTaskCasino
     {
         static void Main(string[] args)
         {
-            var casino = new Casino();
+            IGame casino = new Casino();
             casino.StartGame();
         }
     }
