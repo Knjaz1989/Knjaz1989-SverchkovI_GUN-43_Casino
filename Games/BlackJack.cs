@@ -47,19 +47,25 @@ namespace FinalTaskCasino.Games
         public override void PlayGame()
         {
             Shuffle();
-            int userPoints = GetCardAndPoints(_deck, 2);
-            int compPoints = GetCardAndPoints(_deck, 2);
+            int cardCount = 2;
+            int userPoints = GetCardAndPoints(_deck, cardCount);
+            int compPoints = GetCardAndPoints(_deck, cardCount);
 
-            while (userPoints == compPoints && userPoints <= 21 && compPoints <= 21)
+            cardCount = 1;
+            while (
+                userPoints == compPoints 
+                && userPoints <= GameConstants.BlackJackMaxPoints 
+                && compPoints <= GameConstants.BlackJackMaxPoints
+            )
             {
-                userPoints = GetCardAndPoints(_deck, 1, userPoints);
-                compPoints = GetCardAndPoints(_deck, 1, compPoints);
+                userPoints = GetCardAndPoints(_deck, cardCount, userPoints);
+                compPoints = GetCardAndPoints(_deck, cardCount, compPoints);
             }
-            if (userPoints > 21 && compPoints > 21)
+            if (userPoints > GameConstants.BlackJackMaxPoints && compPoints > GameConstants.BlackJackMaxPoints)
             {
                 OnDraw?.Invoke();
             }
-            else if (userPoints > compPoints || compPoints > 21)
+            else if (userPoints > compPoints || compPoints > GameConstants.BlackJackMaxPoints)
             {
                 OnWin?.Invoke();
             }

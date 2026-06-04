@@ -1,6 +1,4 @@
 ﻿using FinalTaskCasino.Interfaces;
-using FinalTaskCasino.Inventory;
-using System.Text.Json;
 
 namespace FinalTaskCasino.Services
 {

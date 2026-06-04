@@ -2,6 +2,7 @@
 using FinalTaskCasino.Interfaces;
 using FinalTaskCasino.Inventory;
 using FinalTaskCasino.Services;
+using FinalTaskCasino.Utils;
 using System.Text.Json;
 
 namespace FinalTaskCasino.Main
@@ -9,7 +10,6 @@ namespace FinalTaskCasino.Main
     public class Casino : IGame
     {
         private CasinoGameBase _currentGame;
-
 
         private User GetUser(FileSystemSaveLoadService fsss, string name)
         {
@@ -26,12 +26,13 @@ namespace FinalTaskCasino.Main
 
         public void StartGame()
         {
-            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Files");
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, GameConstants.SavePath);
             var fsss = new FileSystemSaveLoadService(path);
             Console.Write("Как вас зовут: ");
             string name = Console.ReadLine();
             name = new System.Globalization.CultureInfo("en-US").TextInfo.ToTitleCase(name.ToLower());
             var user = GetUser(fsss, name);
+            Console.WriteLine($"Ваш текущий баланс: {user.Money}");
             Console.WriteLine("Выбирите игру:\n\t1 - BlackJack\n\t2 - Игра в кости\n\n0 - Чтобы выйти");
 
             while (true)
@@ -48,10 +49,10 @@ namespace FinalTaskCasino.Main
                             Console.WriteLine("До новых встреч!");
                             return;
                         case 1:
-                            _currentGame = new BlackJack(52);
+                            _currentGame = new BlackJack(GameConstants.BlackJackCardCount);
                             break;
                         case 2:
-                            _currentGame = new Craps(2);
+                            _currentGame = new Craps(GameConstants.CrapsDiceCount);
                             break;
                         default:
                             Console.WriteLine("Такой игры не существует. Попробуйте еще раз!");
@@ -69,12 +70,15 @@ namespace FinalTaskCasino.Main
                         user.Money -= (uint)bet;
                         _currentGame.OnWin += () =>
                         {
-                            user.Money += (uint)(bet * 2);
-                            Console.WriteLine($"Победа! Ваш баланс: {user.Money}");
+                            int prize = bet * 2;
+                            Console.WriteLine($"Победа! Выигрыш составил: {prize}");
+                            user.Money += (uint)(prize);
+                            Console.WriteLine($"Ваш баланс: {user.Money}");
                         };
                         _currentGame.OnLoose += () =>
                         {
-                            Console.WriteLine($"Поражение! Ваш баланс: {user.Money}");
+                            Console.WriteLine($"Поражение! Вы проиграли: {bet}");
+                            Console.WriteLine($"Ваш баланс: {user.Money}");
                         };
                         _currentGame.OnDraw += () =>
                         {

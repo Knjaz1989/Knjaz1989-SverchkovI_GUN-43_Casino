@@ -1,9 +1,12 @@
-﻿namespace FinalTaskCasino.Inventory
+﻿using FinalTaskCasino.Utils;
+
+namespace FinalTaskCasino.Inventory
 {
     public class User
     {
         private readonly string _name;
-        private uint _money = 1000;
+        private uint _money = GameConstants.UserStartMoney;
+        private uint _maxMoney = GameConstants.UserMaxMoney;
 
         public string Name { get => _name; }
         public uint Money { 
@@ -13,6 +16,11 @@
                 if (value <  0)
                 {
                     _money = 0;
+                }
+                else if (value > _maxMoney)
+                {
+                    _money = value / 2;
+                    Console.WriteLine("You wasted half of your bank money in casino’s bar");
                 }
                 else
                 {
